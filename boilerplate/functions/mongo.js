@@ -1,0 +1,4 @@
+// MongoDB methods
+module.exports={
+    
+}
