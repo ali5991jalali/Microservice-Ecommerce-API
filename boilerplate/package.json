@@ -22,7 +22,8 @@
     "mongoose": "^5.9.11",
     "mongoose-paginate": "^5.0.3",
     "mongoose-timestamp": "^0.6.0",
-    "redis": "^3.0.2"
+    "redis": "^3.0.2",
+    "validator": "^13.0.0"
   },
   "devDependencies": {
     "request": "^2.88.2"
