@@ -30,5 +30,12 @@ module.exports = {
             if (validator.isMongoId(id.trim())) result.push(id.trim())
         })
         return result;
+    },
+    findKeysFromObject(object, keys) {
+        const result = {};
+        keys.forEach((key) => {
+            if (object.hasOwnProperty('key')) result[key] = object[key];
+        })
+        return result;
     }
 }
