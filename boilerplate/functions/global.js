@@ -37,5 +37,14 @@ module.exports = {
             if (object.hasOwnProperty('key')) result[key] = object[key];
         })
         return result;
-    }
+    },
+    convertQueryFieldsToArray(fields) {
+        const result = []
+        fields = (fields.trim()).split(',');
+        fields.forEach((field) => {
+            if (field.trim().length != 0) result.push(field.trim())
+        })
+        return result;
+    },
+    
 }
