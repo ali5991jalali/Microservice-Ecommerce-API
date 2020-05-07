@@ -4,7 +4,7 @@ const elasticsearch = require('elasticsearch');
 const Main = require('./../models/main');
 // Functions
 const { findKeysFromObject } = require('./../functions/global');
-const { makeMongoQuery } = require('./../functions/mongo');
+const { makeMongoQuery, makeMongoUpdateObject } = require('./../functions/mongo');
 // Configs
 const { databaseKeys } = require('./../configs');
 const { keyPaths: mainKeyPaths } = databaseKeys.main;
@@ -43,13 +43,25 @@ module.exports = {
         }
     },
     updateOne: async () => {
-        
+        let update = findKeysFromObject(req.body, ['name', 'email', 'location'])
+        update = makeMongoUpdateObject(update, mainKeyPaths);
+        try {
+            const updated = await Main.findOneAndUpdate({ _id: req.params.id }, update, { new: true });
+            if (!updated) return // Not found data error
+        } catch (error) {
+            console.log(error)
+        }
     },
     updateMany: async () => {
 
     },
     removeOne: async () => {
-
+        try {
+            const deleted = await Main.findOneAndDelete({ _id: req.params.id })
+            if (!deleted) return // Error for not found data
+        } catch (error) {
+            console.log(error)
+        }
     },
     removeMany: async () => {
 
