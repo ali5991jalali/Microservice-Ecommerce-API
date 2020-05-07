@@ -45,6 +45,5 @@ module.exports = {
             if (field.trim().length != 0) result.push(field.trim())
         })
         return result;
-    },
-    
+    }   
 }

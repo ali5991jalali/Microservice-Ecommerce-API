@@ -5,11 +5,12 @@ module.exports = {
     },
     databaseKeys: {
         main: {
-            dataKeys: {
-
-            },
-            rangeKeys: {
-
+            keyPaths: {
+                name: 'name',
+                family: 'family',
+                phone: 'phone',
+                online: 'meta.online',
+                location: 'meta.profile.location'
             }
         }
     },
