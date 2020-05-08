@@ -9,7 +9,7 @@ module.exports = {
         });
         return result;
     },
-    makeMongoUpdateObject(object, keyPaths) {
+    makeMongoUpdateBody(object, keyPaths) {
         const result = {};
         keyPaths.forEach(key => {
             if (query.hasOwnProperty(key)) {
@@ -18,7 +18,16 @@ module.exports = {
         });
         return result;
     },
-    makeDeleteQuery(query, keyPaths) {
+    makeDeleteCondition(query, keyPaths) {
+        const result = {};
+        keyPaths.forEach(key => {
+            if (query.hasOwnProperty(key)) {
+                result[(keyPaths[key])] = query[key];
+            }
+        });
+        return result;
+    },
+    makeUpdateManyCondition(query, keyPaths) {
         const result = {};
         keyPaths.forEach(key => {
             if (query.hasOwnProperty(key)) {
