@@ -4,7 +4,7 @@ const elasticsearch = require('elasticsearch');
 const Main = require('./../models/main');
 // Functions
 const { findKeysFromObject } = require('./../functions/global');
-const { makeMongoQuery, makeMongoUpdateObject } = require('./../functions/mongo');
+const { makeMongoQuery, makeMongoUpdateObject, makeDeleteQuery } = require('./../functions/mongo');
 // Configs
 const { databaseKeys } = require('./../configs');
 const { keyPaths: mainKeyPaths } = databaseKeys.main;
@@ -64,6 +64,11 @@ module.exports = {
         }
     },
     removeMany: async () => {
-
+        const deleteQuery = makeDeleteQuery((req.query), mainKeyPaths)
+        try {
+            const deleted = await Main.deleteMany(deleteQuery);
+        } catch (error) {
+            console.log(error);
+        }
     }
 }

@@ -17,5 +17,14 @@ module.exports = {
             }
         });
         return result;
+    },
+    makeDeleteQuery(query, keyPaths) {
+        const result = {};
+        keyPaths.forEach(key => {
+            if (query.hasOwnProperty(key)) {
+                result[(keyPaths[key])] = query[key];
+            }
+        });
+        return result;
     }
 }
