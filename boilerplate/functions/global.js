@@ -44,14 +44,14 @@ module.exports = {
         })
         return result;
     },
-    errorResponse(code) {
-        return {
+    errorResponse(code, status, res) {
+        return res.status(status).send({
             sucess: false,
             error: {
                 code,
                 message: errors[code]
             }
-        }
+        })
     },
     dataResponse(data) {
         return {

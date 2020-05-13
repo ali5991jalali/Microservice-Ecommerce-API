@@ -7,10 +7,10 @@ const { } = process.env;
 
 module.exports = {
     authorization: (req, res, next) => {
-        if (!(req.headers).hasOwnProperty('authorization')) return res.status(403).send(errorResponse(3));
+        if (!(req.headers).hasOwnProperty('authorization')) return errorResponse(403, 3, res);
         try {
             const code = await redis.get((req.headers.authorization));
-            if (!code) return res.status(403).send(errorResponse(3));
+            if (!code) return errorResponse(403, 3, res);
             return next();
         } catch (error) {
             console.log(error);
