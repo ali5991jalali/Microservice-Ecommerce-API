@@ -44,7 +44,7 @@ module.exports = {
         })
         return result;
     },
-    errorResponse(code, status, res) {
+    errorResponse(status, code, res) {
         return res.status(status).send({
             sucess: false,
             error: {
@@ -53,11 +53,11 @@ module.exports = {
             }
         })
     },
-    dataResponse(data) {
-        return {
+    dataResponse(data, res) {
+        return res.status(200).send({
             sucess: true,
             data
-        }
+        })
     },
     errorResponseFromMessage(error, res) {
         let code = 4;
