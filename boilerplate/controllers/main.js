@@ -27,7 +27,7 @@ module.exports = {
     findMany: async () => {
         const query = makeMongoQuery(req.query, mainKeyPaths);
         try {
-            const result = await Main.find(query);;
+            const result = await Main.find(query).limit(req.query.limit || 10).skip(req.query.skip || 0).sort({ [req.query.sort || 'createdAt']: (req.query.order || 'asc') });
             if (result.length == 0) return errorResponse(404, 5, res);
             return dataResponse(result, res);
         } catch (error) {
