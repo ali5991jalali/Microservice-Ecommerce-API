@@ -5,16 +5,14 @@ const validator = require('validator');
 // ENV
 const { PORT, MONGO_ADDRESS } = process.env;
 // Configs
-
+const { errors } = require('./../configs');
 // Functions
 
 // Methods
 module.exports = {
     routerSetting(app) {
-        app.listen(PORT, () => {
-            console.log(`Application is running on port ${PORT}`)
-        })
-        app.use(bodyParser.json());
+        app.listen(PORT, () => console.log(`Application is running on port ${PORT}`))
+        app.use(bodyParser.json())
         app.use(bodyParser.urlencoded({ extended: true }))
     },
     connections() {
@@ -45,5 +43,31 @@ module.exports = {
             if (field.trim().length != 0) result.push(field.trim())
         })
         return result;
-    }   
+    },
+    errorResponse(code) {
+        return {
+            sucess: false,
+            error: {
+                code,
+                message: errors[code]
+            }
+        }
+    },
+    dataResponse(data) {
+        return {
+            sucess: true,
+            data
+        }
+    },
+    errorResponseFromMessage(error, res) {
+        let code = 4;
+        let status = 500;
+        return res.status(status).send({
+            sucess: false,
+            error: {
+                code,
+                message: errors[code]
+            }
+        })
+    }
 }
