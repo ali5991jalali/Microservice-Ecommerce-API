@@ -1,5 +1,3 @@
-// Packages
-const elasticsearch = require('elasticsearch');
 //Model
 const Main = require('./../models/main');
 // Functions
@@ -8,9 +6,11 @@ const { makeMongoQuery, makeMongoUpdateObject, makeDeleteQuery, makeUpdateManyCo
 // Configs
 const { databaseKeys } = require('./../configs');
 const { keyPaths: mainKeyPaths } = databaseKeys.main;
+// Redis
+const { redisClient } = require('./../functions/redis');
 // Methods
 module.exports = {
-    createOne: async () => {
+    createOne: async (req, res) => {
         const data = findKeysFromObject((req.body), [])
         // Inner fields
         Object.assign(data, {
@@ -24,7 +24,7 @@ module.exports = {
             errorResponseFromMessage(error.message, res)
         }
     },
-    findMany: async () => {
+    findMany: async (req, res) => {
         const query = makeMongoQuery(req.query, mainKeyPaths);
         try {
             const result = await Main.find(query).limit(req.query.limit || 10).skip(req.query.skip || 0).sort({ [req.query.sort || 'createdAt']: (req.query.order || 'asc') });
@@ -35,7 +35,7 @@ module.exports = {
             errorResponseFromMessage(error.message, res)
         }
     },
-    findOne: async () => {
+    findOne: async (req, res) => {
         try {
             const result = await Main.findOne({ _id: req.params.id });
             if (!result) return errorResponse(404, 5, res);
@@ -45,7 +45,7 @@ module.exports = {
             errorResponseFromMessage(error.message, res)
         }
     },
-    updateOne: async () => {
+    updateOne: async (req, res) => {
         let update = findKeysFromObject(req.body, [])
         update = makeMongoUpdateObject(update, mainKeyPaths);
         try {
@@ -56,7 +56,7 @@ module.exports = {
             errorResponseFromMessage(error.message, res)
         }
     },
-    updateMany: async () => {
+    updateMany: async (req, res) => {
         const updateCondition = makeUpdateManyCondition((req.query), keyPaths);
         const updateBody = findKeysFromObject((req.body), []);
         try {
@@ -66,7 +66,7 @@ module.exports = {
             errorResponseFromMessage(error.message, res)
         }
     },
-    removeOne: async () => {
+    removeOne: async (req, res) => {
         try {
             const deleted = await Main.findOneAndDelete({ _id: req.params.id })
             if (!deleted) return errorResponse(404, 5, res) // Error for not found data
@@ -75,10 +75,19 @@ module.exports = {
             errorResponseFromMessage(error.message, res)
         }
     },
-    removeMany: async () => {
+    removeMany: async (req, res) => {
         const deleteQuery = makeDeleteQuery((req.query), mainKeyPaths)
         try {
             const deleted = await Main.deleteMany(deleteQuery);
+        } catch (error) {
+            console.log(error)
+            errorResponseFromMessage(error.message, res)
+        }
+    },
+    login: async (req, res) => {
+        try {
+            await redisClient.set(req.body.code, true);
+            return res.status(200).send({ sucess: true })
         } catch (error) {
             console.log(error)
             errorResponseFromMessage(error.message, res)

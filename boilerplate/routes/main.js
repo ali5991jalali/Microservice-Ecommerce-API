@@ -10,10 +10,10 @@ const controller = require('./../controllers/main');
 const paramValidation = require('./../middlewares/main/paramValidation');
 // Routes
 router
-    .post('/')
-    .get('/')
-    .get('/:id')
-    .put('/:id')
-    .put('/')
-    .delete('/')
-    .delete('/:id')
+    .post('/', controller.createOne)
+    .get('/', controller.findMany)
+    .get('/:id', controller.findOne)
+    .put('/:id', controller.updateOne)
+    .put('/', controller.updateMany)
+    .delete('/', controller.removeMany)
+    .delete('/:id', controller.removeOne)
