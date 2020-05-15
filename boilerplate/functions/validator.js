@@ -1,3 +1,6 @@
+// Packages
+const validator = require('validator');
+// Custom validator methods
 const customValidator = {
     isArray: function (data) {
         return Array.isArray(data)
@@ -5,7 +8,17 @@ const customValidator = {
     isObject: function (data) {
         if (typeof (data) == 'object' && data != null) return true;
         return false;
+    },
+    isBoolean: function (data) {
+        return /^(true|false)$/.test(data)
+    },
+    isMongoId: function (data) {
+        return validator.isMongoId(data);
     }
+}
+
+const correctType = () => {
+
 }
 
 module.exports = {

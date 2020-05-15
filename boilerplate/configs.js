@@ -21,7 +21,13 @@ module.exports = {
     routes: {
         main: {
             findMany: {
-
+                query:{
+                    exist:[],
+                    check:{
+                        phones:'isArray',
+                        online:'isBoolean'
+                    }
+                }
             },
             findOne: {
 
